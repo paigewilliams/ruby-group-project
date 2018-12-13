@@ -23,6 +23,7 @@ function initMapAll() {
   var allLng = document.getElementsByClassName('place_longitude');
   var locations = []
   var markers = []
+
   for(var i = 0; i < allLat.length; i++){
     var coordinate = {
       lat: parseFloat(allLat[i].getAttribute("value")),
@@ -30,11 +31,12 @@ function initMapAll() {
     }
     locations.push(coordinate)
   };
+
   var mapAll = new google.maps.Map(document.getElementById('map-all'), {
     zoom: 12,
     center: {lat: 45.520788, lng: -122.677645}
   })
-  
+
   for(var i = 0; i < locations.length; i++){
     var marker = new google.maps.Marker({
       position: locations[i],
@@ -48,6 +50,7 @@ function initMap2() {
   var lat = document.getElementById('place_latitude').value;
   var lng = document.getElementById('place_longitude').value;
   // if not defined create default position
+
   if (!lat || !lng){
     lat=45.520788;
     lng=-122.677645;
