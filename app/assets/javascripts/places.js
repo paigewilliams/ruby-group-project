@@ -18,10 +18,38 @@ function initMap(lat, lng) {
 }
 
 function initMapAll() {
-  var lat = document.getElementById('place_latitude').getAttribute("value");
-  var lng = document.getElementById('place_longitude').getAttribute("value");
+  var test = 0
+  var allLat = document.getElementsByClassName('place_latitude');
+  var allLng = document.getElementsByClassName('place_longitude');
+  var allLatVal = []
+  var allLngVal = []
+  var allCoordinates = []
 
-  
+  for(var i = 0; i < allLat.length; i++){
+    var coordinate = []
+
+    coordinate.push(parseFloat(allLat[i].getAttribute("value")))
+    coordinate.push(parseFloat(allLng[i].getAttribute("value")))
+
+    allCoordinates.push(coordinate)
+    }
+
+
+
+  debugger
+  var myCoords = new google.maps.LatLng(lat, lng);
+  var mapOptions = {
+    center: myCoords,
+    zoom: 14
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-all'),mapOptions);
+
+  var marker = new google.maps.Marker({
+    position: myCoords,
+    map: map
+  });
+
 }
 
 function initMap2() {
