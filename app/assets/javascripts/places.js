@@ -98,4 +98,4 @@ function initMap2() {
   marker.addListener('dragend', function() {
     map.panTo(marker.getPosition());
   });
-}
+}7
