@@ -1,22 +1,20 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 function initMap(lat, lng) {
-
   var myCoords = new google.maps.LatLng(lat, lng);
-
   var mapOptions = {
     center: myCoords,
     zoom: 14
   };
 
   var map = new google.maps.Map(document.getElementById('map'),mapOptions);
-
+  var infoWindow = new google.maps.InfoWindow
   var marker = new google.maps.Marker({
     position: myCoords,
     map: map
   });
 }
-
+// =================================================================================
 function initMapAll() {
 
   var allLat = document.getElementsByClassName('place_latitude');
@@ -45,39 +43,67 @@ function initMapAll() {
     markers.push(marker)
   };
 }
-
+// =================================================================================
 function initMap2() {
-  var lat = document.getElementById('place_latitude').value;
-  var lng = document.getElementById('place_longitude').value;
-  // if not defined create default position
+  var pos
+  var map = new google.maps.Map(document.getElementById('map2'), mapOptions);
+  var marker
 
-  if (!lat || !lng){
-    lat=45.520788;
-    lng=-122.677645;
-    document.getElementById('place_latitude').value = lat;
-    document.getElementById('place_longitude').value = lng;
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      map.setCenter(pos);
+      marker = new google.maps.Marker ({
+        position: pos,
+        animation: google.maps.Animation.DROP,
+        map: map,
+        draggable: true
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  }
+  else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+    marker = new google.maps.Marker ({
+      position: myCoords,
+      animation: google.maps.Animation.DROP,
+      map: map,
+      draggable: true
   }
 
-  var myCoords = new google.maps.LatLng(lat, lng);
-  var mapOptions = {
-    center: myCoords,
-    zoom: 14
-  };
 
-  var map = new google.maps.Map(document.getElementById('map2'), mapOptions);
-  var marker = new google.maps.Marker({
-    position: myCoords,
-    animation: google.maps.Animation.DROP,
-    map: map,
-    draggable: true
-  });
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+      'Error: The Geolocation service failed.' :
+      'Error: Your browser doesn\'t support geolocation.');
+      infoWindow.open(map);
+    }
+
+    var mapOptions = {
+      center: myCoords,
+      zoom: 14
+    };
+    var myCoords = new google.maps.LatLng(45, -122);
+
+    });
+
+
+
+
+
+
 
   //refresh marker postion and recenter map on marker
   function refreshMarker(){
     var lat = document.getElementById('place_latitude').value;
     var lng = document.getElementById('place_longitude').value;
-    var myCoords = new google.maps.LatLng(lat, lng);
-    marker.setPosition(myCoords);
+    newPos = new google.maps.LatLng(lat, lng);
+    marker.setPosition(newPos);
     map.setCenter(marker.getPosition());
   }
 
